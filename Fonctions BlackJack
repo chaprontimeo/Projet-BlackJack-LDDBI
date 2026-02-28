@@ -17,9 +17,9 @@ def calculer_score(joueur):
     score = 0
     for carte in joueur:
         if carte == "As":
-            a = int(input("Vous avez",score," ,voulez-vous misez 1 ou 11?  (1/11) "))
+            a = int(input("Voulez-vous misez 1 ou 11?  (1/11) "))
             score += a
-        elif carte in ["Valet","Reine","Roi"]:
+        elif carte in ["Valet","Reinne","Roi"]:
             score += 10
         else:
             score += int(carte)
@@ -32,35 +32,40 @@ def brule(joueur):
     return est_brule
 
 def tour_joueur(joueur,liste):
-    actions = ["Hit","Stand","Double Down","Surrender"]
+    actions = ["Hit","Stand","DoubleDown","Surrender"]
     est_vrai = True
     while est_vrai == True:
-        a = input("Que voulez vous faire? (Hit/Stand/Double Down/Surrender) ")
+        a = input("Que voulez vous faire? (Hit/Stand/DoubleDown/Surrender) ")
         if a in actions:
             est_vrai = False
     if a == "Double Down":
-        if len(joueur) != 2 and (calculer_score(joueur) != 9 or calculer_score(joueur) != 10 or calculer_score(joueur) != 11):
+        if len(joueur) != 2 and calculer_score(joueur) not in [9,10,11]:
             print("Vous ne pouvez pas faire cette action")
             a = "Hit"
 #A completer avec les mises
     if a == "Hit":
         continuer = True
         while continuer == True:
-            joueur.append(tirer_cartes(liste))
+            carte = tirer_cartes(liste)
+            print("Vous avez tirer la carte", carte)
+            joueur.append(carte)
             if brule(joueur) == True:
                 print("Vous avez trop de points, fin du tour ")
                 return None
             else: 
-                continuer = bool(input("Voulez-vous continuer? (True/False) "))
+                a = input("Voulez-vous continuer? (True/False) ")
+                if a == "False":
+                    continuer = False
+                    print("Votre tour est terminé")
         return None
     if a == "Stand":
         return None
-#if a == "Surrender":
+#    if a == "Surrender":
 #A completer avec les mises      
 
 
 
-#Verrification
+# Verrification
 
 nb_joueurs = int(input("Combien de joueurs?  "))
 joueurs = []
@@ -70,3 +75,5 @@ for i in range (nb_joueurs):
 print(joueurs)
 print(joueur)
 print(calculer_score(joueur))
+print(brule(joueur))
+print(tour_joueur(joueur,paquet))
