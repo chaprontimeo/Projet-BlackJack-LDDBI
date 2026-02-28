@@ -2,9 +2,16 @@ import random
 
 paquet = 4*["As","2","3","4","5","6","7","8","9","10","Valet","Reinne","Roi"]
 
+def paquet_melage(paquet):
+    nouveau_paquet = []
+    for _ in paquet:
+        a = random.randint(0,len(paquet)-1)
+        nouveau_paquet.append(paquet[a])
+    return nouveau_paquet
+    
+
 def tirer_cartes(liste):
-    a = random.randint(0,len(liste)-1)
-    carte = liste.pop(a)
+    carte = liste.pop()
     return carte
 
 def creer_main(liste):
@@ -15,14 +22,17 @@ def creer_main(liste):
 
 def calculer_score(joueur):
     score = 0
+    nombre_as = 0
     for carte in joueur:
         if carte == "As":
-            a = int(input("Voulez-vous misez 1 ou 11?  (1/11) "))
-            score += a
+            score += 11
+        elif carte in ["2","3","4","5","6","7","8","9","10"]:
+            score += int(carte)
         elif carte in ["Valet","Reinne","Roi"]:
             score += 10
-        else:
-            score += int(carte)
+    while score > 21 and nombre_as > 0:
+        score -= 10
+        nombre_as -= 10
     return score
 
 def brule(joueur):
@@ -38,7 +48,7 @@ def tour_joueur(joueur,liste):
         a = input("Que voulez vous faire? (Hit/Stand/DoubleDown/Surrender) ")
         if a in actions:
             est_vrai = False
-    if a == "Double Down":
+    if a == "DoubleDown":
         if len(joueur) != 2 and calculer_score(joueur) not in [9,10,11]:
             print("Vous ne pouvez pas faire cette action")
             a = "Hit"
@@ -57,23 +67,29 @@ def tour_joueur(joueur,liste):
                 if a == "False":
                     continuer = False
                     print("Votre tour est terminé")
+            if calculer_score(joueur) == 21:
+                print("Vous avez gagné")
+                break
         return None
     if a == "Stand":
+        print("Vous passez votre tour")
         return None
 #    if a == "Surrender":
 #A completer avec les mises      
 
 
 
-# Verrification
 
+
+# Verrification
+paquet_carte = paquet_melage(paquet)
 nb_joueurs = int(input("Combien de joueurs?  "))
 joueurs = []
 for i in range (nb_joueurs):
-    joueur = creer_main(paquet)
+    joueur = creer_main(paquet_carte)
     joueurs.append(joueur)
 print(joueurs)
 print(joueur)
 print(calculer_score(joueur))
 print(brule(joueur))
-print(tour_joueur(joueur,paquet))
+print(tour_joueur(joueur,paquet_carte))
