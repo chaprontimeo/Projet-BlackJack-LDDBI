@@ -26,13 +26,14 @@ def calculer_score(joueur):
     for carte in joueur:
         if carte == "As":
             score += 11
+            nombre_as += 1
         elif carte in ["2","3","4","5","6","7","8","9","10"]:
             score += int(carte)
         elif carte in ["Valet","Reinne","Roi"]:
             score += 10
     while score > 21 and nombre_as > 0:
         score -= 10
-        nombre_as -= 10
+        nombre_as -= 1
     return score
 
 def brule(joueur):
@@ -59,6 +60,7 @@ def tour_joueur(joueur,liste):
             carte = tirer_cartes(liste)
             print("Vous avez tirer la carte", carte)
             joueur.append(carte)
+            print(joueur)
             if brule(joueur) == True:
                 print("Vous avez trop de points, fin du tour ")
                 return None
@@ -79,10 +81,10 @@ def tour_joueur(joueur,liste):
 
 
 
-
-
 # Verrification
 paquet_carte = paquet_melage(paquet)
+print(paquet_carte)
+print(len(paquet_carte))
 nb_joueurs = int(input("Combien de joueurs?  "))
 joueurs = []
 for i in range (nb_joueurs):
