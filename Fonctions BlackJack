@@ -61,17 +61,18 @@ def tour_joueur(joueur,liste):
             print("Vous avez tirer la carte", carte)
             joueur.append(carte)
             print(joueur)
+            print("Vous avez",calculer_score(joueur), "points")
             if brule(joueur) == True:
                 print("Vous avez trop de points, fin du tour ")
                 return None
-            else: 
+            if calculer_score(joueur) == 21:
+                print("Vous avez gagné")
+                break
+            if brule(joueur) == False:
                 a = input("Voulez-vous continuer? (True/False) ")
                 if a == "False":
                     continuer = False
                     print("Votre tour est terminé")
-            if calculer_score(joueur) == 21:
-                print("Vous avez gagné")
-                break
         return None
     if a == "Stand":
         print("Vous passez votre tour")
