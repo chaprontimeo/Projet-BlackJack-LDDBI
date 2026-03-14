@@ -18,7 +18,7 @@ def creer_main(liste):                                                          
     main  = []
     main.append(tirer_cartes(liste))
     main.append(tirer_cartes(liste))
-    return main
+    return main 
 
 def calculer_score(joueur):
     score = 0
