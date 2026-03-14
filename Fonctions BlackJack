@@ -14,7 +14,7 @@ def tirer_cartes(liste):
     carte = liste.pop()
     return carte
 
-def creer_main(liste):
+def creer_main(liste):                                                             main va etre = a joueur au fil du code 
     main  = []
     main.append(tirer_cartes(liste))
     main.append(tirer_cartes(liste))
