@@ -2,11 +2,11 @@ import random
 
 paquet = 4*["As","2","3","4","5","6","7","8","9","10","Valet","Reinne","Roi"]
 
-def paquet_melage(paquet):
+def paquet_melange(paquet):
     nouveau_paquet = []
-    for _ in paquet:
-        a = random.randint(0,len(paquet)-1)
-        nouveau_paquet.append(paquet[a])
+    while len(paquet) > 0:
+        numero_carte = random.randint(0, len(paquet)-1)
+        nouveau_paquet.append(paquet.pop(numero_carte))
     return nouveau_paquet
     
 
