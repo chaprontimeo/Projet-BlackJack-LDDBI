@@ -136,7 +136,7 @@ def jouer_tour():
     print("Résultat du tour :", gain)
 
 # Vérification
-#paquet_carte = paquet_melage(paquet)
+#paquet_carte = paquet_melange(paquet)
 #print(paquet_carte)
 #print(len(paquet_carte))
 #nb_joueurs = int(input("Combien de joueurs?  "))
