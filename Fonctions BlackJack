@@ -42,19 +42,27 @@ def brule(joueur):
         est_brule = True
     return est_brule
 
-def tour_joueur(joueur,liste):
+def tour_joueur(joueur,liste,mise):
     actions = ["Hit","Stand","DoubleDown","Surrender"]
     est_vrai = True
     while est_vrai == True:
-        a = input("Que voulez vous faire? (Hit/Stand/DoubleDown/Surrender) ")
-        if a in actions:
+        action = input("Que voulez vous faire? (Hit/Stand/DoubleDown/Surrender) ")
+        if action in actions:
             est_vrai = False
-    if a == "DoubleDown":
-        if len(joueur) != 2 and calculer_score(joueur) not in [9,10,11]:
-            print("Vous ne pouvez pas faire cette action")
-            a = "Hit"
-#A completer avec les mises
-    if a == "Hit":
+        else:
+            print("Ce n'est pas une action ou vous l'avez mal orthographié")
+    if action == "DoubleDown":
+        if len(joueur) == 2 and calculer_score(joueur) in [9,10,11]:
+            mise = mise * 2
+            carte = tirer_cartes(liste)
+            print("Carte tirée :", carte)
+            joueur.append(carte)
+            print("Votre score :", calculer_score(joueur))
+            return mise
+        else:
+            print("Vous ne pouvez pas faire cette action, vous devez tirer une carte")
+            action = "Hit"
+    if action == "Hit":
         continuer = True
         while continuer == True:
             carte = tirer_cartes(liste)
@@ -64,21 +72,21 @@ def tour_joueur(joueur,liste):
             print("Vous avez",calculer_score(joueur), "points")
             if brule(joueur) == True:
                 print("Vous avez trop de points, fin du tour ")
-                return None
+                return mise
             if calculer_score(joueur) == 21:
                 print("Vous avez gagné")
                 break
             if brule(joueur) == False:
-                a = input("Voulez-vous continuer? (True/False) ")
-                if a == "False":
+                fin_tour = input("Voulez-vous continuer? (True/False) ")
+                if fin_tour == "False":
                     continuer = False
                     print("Votre tour est terminé")
-        return None
-    if a == "Stand":
+        return mise
+    if action == "Stand":
         print("Vous passez votre tour")
-        return None
-#    if a == "Surrender":
-#A completer avec les mises      
+        return mise
+    if action == "Surrender":
+        return mise     
 
 def tour_croupier(croupier, paquet):
     continuer = True
@@ -114,17 +122,31 @@ def comparer_scores(joueur, croupier, mise):
         print("Egalité")
         return 0
 
-# Verrification
-paquet_carte = paquet_melage(paquet)
-print(paquet_carte)
-print(len(paquet_carte))
-nb_joueurs = int(input("Combien de joueurs?  "))
-joueurs = []
-for i in range (nb_joueurs):
+def jouer_tour():
+    paquet_carte = paquet_melange(paquet)
     joueur = creer_main(paquet_carte)
-    joueurs.append(joueur)
-print(joueurs)
-print(joueur)
-print(calculer_score(joueur))
-print(brule(joueur))
-print(tour_joueur(joueur,paquet_carte))
+    croupier = creer_main(paquet_carte)
+    print("Votre main :", joueur)
+    print("Croupier :", [croupier[0], "?"])
+    mise = int(input("Combien voulez-vous miser ? "))
+    mise = tour_joueur(joueur, paquet_carte, mise)
+    if brule(joueur) == False:
+        tour_croupier(croupier, paquet_carte)
+    gain = comparer_scores(joueur, croupier, mise)
+    print("Résultat du tour :", gain)
+
+# Verrification
+#paquet_carte = paquet_melage(paquet)
+#print(paquet_carte)
+#print(len(paquet_carte))
+#nb_joueurs = int(input("Combien de joueurs?  "))
+#joueurs = []
+#for i in range (nb_joueurs):
+#    joueur = creer_main(paquet_carte)
+#    joueurs.append(joueur)
+#print(joueurs)
+#print(joueur)
+#print(calculer_score(joueur))
+#print(brule(joueur))
+#print(tour_joueur(joueur,paquet_carte))
+#print(jouer_tour())
