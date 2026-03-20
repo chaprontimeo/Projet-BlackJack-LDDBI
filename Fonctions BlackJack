@@ -135,7 +135,7 @@ def jouer_tour():
     gain = comparer_scores(joueur, croupier, mise)
     print("Résultat du tour :", gain)
 
-# Verrification
+# Vérification
 #paquet_carte = paquet_melage(paquet)
 #print(paquet_carte)
 #print(len(paquet_carte))
