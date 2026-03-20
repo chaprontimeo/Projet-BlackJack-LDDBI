@@ -80,7 +80,39 @@ def tour_joueur(joueur,liste):
 #    if a == "Surrender":
 #A completer avec les mises      
 
+def tour_croupier(croupier, paquet):
+    continuer = True
+    while continuer == True:
+        score = calculer_score(croupier)
+        print("Croupier :", croupier, "=", score, "points")
+        if score < 17:
+            carte = tirer_cartes(paquet)
+            print("Le croupier tire", carte)
+            croupier.append(carte)
+        else:
+            print("Le croupier s'arrête")
+            continuer = False
 
+def comparer_scores(joueur, croupier, mise):
+    score_joueur = calculer_score(joueur)
+    score_croupier = calculer_score(croupier)
+    print("Score joueur :", score_joueur)
+    print("Score croupier :", score_croupier)
+    if score_joueur > 21:
+        print("Vous perdez", mise)
+        return -mise
+    if score_croupier > 21:
+        print("Vous gagnez", mise)
+        return mise
+    if score_joueur > score_croupier:
+        print("Vous gagnez", mise)
+        return mise
+    elif score_joueur < score_croupier:
+        print("Vous perdez", mise)
+        return -mise
+    else:
+        print("Egalité")
+        return 0
 
 # Verrification
 paquet_carte = paquet_melage(paquet)
