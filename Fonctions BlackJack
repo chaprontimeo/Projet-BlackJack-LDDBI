@@ -12,7 +12,7 @@ def paquet_melange(paquet):
 
 def tirer_cartes(liste):
     carte = liste.pop()
-    return cartes
+    return carte
 
 def creer_main(liste):                                                             #main va etre = a joueur au fil du code 
     main  = []
