@@ -1,1 +1,168 @@
+import tkinter as tk
+import random
+
+
+paquet = 4 * ["As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reinne", "Roi"]
+
+
+def paquet_melange(paquet):
+    paquet_copie = paquet.copy()
+    nouveau_paquet = []
+    while len(paquet_copie) > 0:
+        numero_carte = random.randint(0, len(paquet_copie) - 1)
+        nouveau_paquet.append(paquet_copie.pop(numero_carte))
+    return nouveau_paquet
+
+
+def tirer_cartes(liste):
+    carte = liste.pop()
+    return carte
+
+
+def creer_main(liste):
+    main = []
+    main.append(tirer_cartes(liste))
+    main.append(tirer_cartes(liste))
+    return main
+
+
+def calculer_score(joueur):
+    score = 0
+    nombre_as = 0
+    for carte in joueur:
+        if carte == "As":
+            score += 11
+            nombre_as += 1
+        elif carte in ["2", "3", "4", "5", "6", "7", "8", "9", "10"]:
+            score += int(carte)
+        elif carte in ["Valet", "Reinne", "Roi"]:
+            score += 10
+    while score > 21 and nombre_as > 0:
+        score -= 10
+        nombre_as -= 1
+    return score
+
+
+def brule(joueur):
+    est_brule = False
+    if calculer_score(joueur) > 21:
+        est_brule = True
+    return est_brule
+
+
+racine = tk.Tk()
+racine.title("Blackjack - Interface joueur")
+racine.geometry("850x520")
+racine.config(bg="darkgreen")
+
+
+paquet_carte = []
+joueur = []
+croupier = []
+tour_en_cours = False
+
+
+def texte_main(main):
+    return " | ".join(main)
+
+
+def afficher_etat():
+    label_main_joueur.config(text="Main joueur : " + texte_main(joueur))
+    label_score_joueur.config(
+        text="Score joueur : " + str(calculer_score(joueur)))
+    if len(croupier) >= 2:
+        label_main_croupier.config(
+            text="Main croupier : " + croupier[0] + " | ?")
+    else:
+        label_main_croupier.config(text="Main croupier : ")
+
+
+def afficher_message(message):
+    label_message.config(text=message)
+
+
+def nouvelle_partie():
+    global paquet_carte, joueur, croupier, tour_en_cours
+    paquet_carte = paquet_melange(paquet)
+    joueur = creer_main(paquet_carte)
+    croupier = creer_main(paquet_carte)
+    tour_en_cours = True
+    afficher_etat()
+    afficher_message("Nouvelle partie commencée. Choisissez Hit ou Stand.")
+    bouton_hit.config(state="normal")
+    bouton_stand.config(state="normal")
+    bouton_nouvelle.config(state="normal")
+
+
+def action_hit():
+    global tour_en_cours
+    if tour_en_cours == False:
+        return
+    carte = tirer_cartes(paquet_carte)
+    joueur.append(carte)
+    afficher_etat()
+    if brule(joueur):
+        afficher_message("Vous avez tiré " + carte +
+                         ". Vous avez trop de points, fin du tour.")
+        bouton_hit.config(state="disabled")
+        bouton_stand.config(state="disabled")
+        tour_en_cours = False
+        return
+    if calculer_score(joueur) == 21:
+        afficher_message("Vous avez 21 points. Fin du tour.")
+        bouton_hit.config(state="disabled")
+        bouton_stand.config(state="disabled")
+        tour_en_cours = False
+        return
+    afficher_message("Vous avez tiré " + carte +
+                     ". Voulez-vous continuer ou vous arrêter ?")
+
+
+def action_stand():
+    global tour_en_cours
+    if tour_en_cours == False:
+        return
+    afficher_message("Votre tour est terminé.")
+    bouton_hit.config(state="disabled")
+    bouton_stand.config(state="disabled")
+    tour_en_cours = False
+
+
+label_titre = tk.Label(racine, text="BLACKJACK", font=(
+    "Helvetica", 22, "bold"), bg="darkgreen", fg="white")
+label_titre.grid(row=0, column=0, columnspan=3, pady=20)
+
+label_main_croupier = tk.Label(racine, text="Main croupier : ", font=(
+    "Helvetica", 14), bg="darkgreen", fg="white")
+label_main_croupier.grid(row=1, column=0, columnspan=3, pady=10)
+
+label_main_joueur = tk.Label(racine, text="Main joueur : ", font=(
+    "Helvetica", 14), bg="darkgreen", fg="white")
+label_main_joueur.grid(row=2, column=0, columnspan=3, pady=20)
+
+label_score_joueur = tk.Label(racine, text="Score joueur : ", font=(
+    "Helvetica", 12), bg="darkgreen", fg="white")
+label_score_joueur.grid(row=3, column=0, columnspan=3, pady=5)
+
+label_message = tk.Label(racine, text="Cliquez sur Nouvelle partie", font=(
+    "Helvetica", 12, "italic"), bg="darkgreen", fg="yellow")
+label_message.grid(row=4, column=0, columnspan=3, pady=20)
+
+bouton_hit = tk.Button(racine, text="Hit", width=12,
+                       font=("Helvetica", 12), command=action_hit)
+bouton_hit.grid(row=5, column=0, padx=10, pady=20)
+
+bouton_stand = tk.Button(racine, text="Stand", width=12, font=(
+    "Helvetica", 12), command=action_stand)
+bouton_stand.grid(row=5, column=1, padx=10, pady=20)
+
+bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=(
+    "Helvetica", 12), command=nouvelle_partie)
+bouton_nouvelle.grid(row=5, column=2, padx=10, pady=20)
+
+
+bouton_hit.config(state="disabled")
+bouton_stand.config(state="disabled")
+
+racine.mainloop()
 
