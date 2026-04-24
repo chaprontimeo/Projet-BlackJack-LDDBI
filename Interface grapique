@@ -50,18 +50,23 @@ def brule(joueur):
     return est_brule
 
 def comparer_score(joueur,croupier):
+    global mise
     score_joueur = calculer_score(joueur)
     score_croupier = calculer_score(croupier)
     if score_croupier > score_joueur:
         afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Vous avez perdu")
+        mise = mise - 10
+        afficher_etat()
     elif score_joueur == score_croupier:
         afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Il y a égalité")
     else:
         afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Vous avez gagné")
+        mise = mise + 10
+        afficher_etat()
 
 racine = tk.Tk()
 racine.title("Blackjack - Interface joueur")
-racine.geometry("850x520")
+racine.geometry("780x450")
 racine.config(bg="darkgreen")
 
 
@@ -103,15 +108,16 @@ def nouvelle_partie():
     tour_en_cours = True
     mise = 50
     afficher_etat()
-    afficher_message("Nouvelle partie commencée. Choisissez Hit ou Stand.")
+    afficher_message("Nouvelle partie commencée. Choisissez une action.")
     bouton_hit.config(state="normal")
     bouton_stand.config(state="normal")
     bouton_dd.config(state = "normal")
+    bouton_surrender.config(state = "normal")
     bouton_nouvelle.config(state="normal")
 
 
 def action_hit():
-    global tour_en_cours
+    global tour_en_cours, mise
     if tour_en_cours == False:
         return
     carte = tirer_cartes(paquet_carte)
@@ -123,13 +129,17 @@ def action_hit():
         bouton_stand.config(state="disabled")
         bouton_dd.config(state = "disabled")
         tour_en_cours = False
+        mise = mise - 10
+        afficher_etat()
         return
     if calculer_score(joueur) == 21:
-        afficher_message("Vous avez 21 points. Fin du tour.")
+        afficher_message("Vous avez 21 points. Vous avez gagné")
         bouton_hit.config(state="disabled")
         bouton_stand.config(state="disabled")
         bouton_dd.config(state ="disabled")
+        bouton_surrender.config(state = "disabled")
         tour_en_cours = False
+        mise = mise + 10
         return
     afficher_message("Vous avez tiré " + carte + ". Voulez-vous continuer ou vous arrêter ? (Hit/Stand)")
 
@@ -141,10 +151,14 @@ def action_stand():
     afficher_message("Votre tour est terminé.")
     bouton_hit.config(state="disabled")
     bouton_stand.config(state="disabled")
+    bouton_dd.config(state="disabled")
+    bouton_surrender.config(state="disabled")
     if calculer_score(joueur) == 21:
         afficher_message("Vous avez 21 points. Vous avez gagné")        
         bouton_hit.config(state="disabled")
         bouton_stand.config(state="disabled")
+        bouton_dd.config(state="disabled")
+        bouton_surrender.config(state="disabled")
         tour_en_cours = False
         return
     elif not brule(joueur):
@@ -167,52 +181,56 @@ def action_dd():
         return
 
 def action_surrender():
-        global tour_en_cours, mise, paquet_carte
-        
+    global tour_en_cours, mise, paquet_carte
+    mise = mise//2
+    afficher_message("Vous avez abandonné")
+    bouton_hit.config(state="disabled")
+    bouton_stand.config(state="disabled")
+    bouton_dd.config(state="disabled")
+    bouton_surrender.config(state="disabled")
+    afficher_etat()
+    tour_en_cours = False
+    return
 
 
-label_titre = tk.Label(racine, text="BLACKJACK", font=(
-    "Helvetica", 22, "bold"), bg="darkgreen", fg="white")
-label_titre.grid(row=0, column=0, columnspan=3, pady=20)
 
-label_main_croupier = tk.Label(racine, text="Main croupier : ", font=(
-    "Helvetica", 14), bg="darkgreen", fg="white")
-label_main_croupier.grid(row=1, column=0, columnspan=3, pady=10)
+label_titre = tk.Label(racine, text="BLACKJACK", font=("Helvetica", 22, "bold"), bg="darkgreen", fg="white")
+label_titre.grid(row=0, column=1, columnspan=3, pady=20)
 
-label_main_joueur = tk.Label(racine, text="Main joueur : ", font=(
-    "Helvetica", 14), bg="darkgreen", fg="white")
-label_main_joueur.grid(row=2, column=0, columnspan=3, pady=20)
+label_main_croupier = tk.Label(racine, text="Main croupier : ", font=("Helvetica", 14), bg="darkgreen", fg="white")
+label_main_croupier.grid(row=1, column=1, columnspan=3, pady=10)
+
+label_main_joueur = tk.Label(racine, text="Main joueur : ", font=("Helvetica", 14), bg="darkgreen", fg="white")
+label_main_joueur.grid(row=2, column=1, columnspan=3, pady=20)
 
 label_mise = tk.Label(racine, text="Mise Joueur : " + texte_mise())
 label_mise.grid(row = 2, column = 0, pady=30)
 
-label_score_joueur = tk.Label(racine, text="Score joueur : ", font=(
-    "Helvetica", 12), bg="darkgreen", fg="white")
-label_score_joueur.grid(row=3, column=0, columnspan=3, pady=5)
+label_score_joueur = tk.Label(racine, text="Score joueur : ", font=("Helvetica", 12), bg="darkgreen", fg="white")
+label_score_joueur.grid(row=3, column=1, columnspan=3, pady=5)
 
-label_message = tk.Label(racine, text="Cliquez sur Nouvelle partie", font=(
-    "Helvetica", 12, "italic"), bg="darkgreen", fg="yellow")
-label_message.grid(row=4, column=0, columnspan=3, pady=20)
+label_message = tk.Label(racine, text="Cliquez sur Nouvelle partie", font=("Helvetica", 12, "italic"), bg="darkgreen", fg="yellow")
+label_message.grid(row=4, column=1, columnspan=3, pady=20)
 
-bouton_hit = tk.Button(racine, text="Hit", width=12,
-                       font=("Helvetica", 12), command=action_hit)
+bouton_hit = tk.Button(racine, text="Hit", width=12, font=("Helvetica", 12), command=action_hit)
 bouton_hit.grid(row=5, column=0, padx=10, pady=20)
 
-bouton_stand = tk.Button(racine, text="Stand", width=12, font=(
-    "Helvetica", 12), command=action_stand)
+bouton_stand = tk.Button(racine, text="Stand", width=12, font=("Helvetica", 12), command=action_stand)
 bouton_stand.grid(row=5, column=1, padx=10, pady=20)
 
 bouton_dd = tk.Button(racine, text= "Double Down", width = 12, font=("Helvetica",12), command = action_dd)
 bouton_dd.grid(row = 5, column = 2, padx=10, pady = 20)
 
-bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=(
-    "Helvetica", 12), command=nouvelle_partie)
-bouton_nouvelle.grid(row=5, column=3, padx=10, pady=20)
+bouton_surrender = tk.Button(racine, text = "Surrender", width = 12, font = ("Helvetica", 12), command = action_surrender)
+bouton_surrender.grid(row = 5, column = 3, padx= 10, pady = 20)
+
+bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=("Helvetica", 12), command=nouvelle_partie)
+bouton_nouvelle.grid(row=5, column=4, padx=10, pady=20)
 
 
 bouton_hit.config(state="disabled")
 bouton_stand.config(state="disabled")
 bouton_dd.config(state ="disabled")
+bouton_surrender.config(state = "disabled")
 
 racine.mainloop()
-
