@@ -88,7 +88,7 @@ def texte_mise():
 def afficher_etat():
     label_main_joueur.config(text="Main joueur : " + texte_main(joueur))
     label_score_joueur.config(text="Score joueur : " + str(calculer_score(joueur)))
-    label_mise.config(text = "Mise : " + texte_mise())
+    label_mise.config(text = "Mise")
     if len(croupier) >= 2:
         label_main_croupier.config(
             text="Main croupier : " + croupier[0] + " | ?")
@@ -226,8 +226,8 @@ label_main_joueur.grid(row=2, column=1, columnspan=3, pady=20)
 canvas_jetons = tk.Canvas(racine, width=120, height=100, bg="darkgreen", highlightthickness=0)
 canvas_jetons.grid(row=1, column=0, rowspan=2, pady=10)
 
-label_mise = tk.Label(racine, text="Mise : " + texte_mise(), bg="darkgreen", fg="white", font=("Helvetica", 12))
-label_mise.grid(row=2, column=0, pady=30)
+label_mise = tk.Label(racine, text="Mise", bg="darkgreen", fg="white", font=("Helvetica", 12))
+label_mise.grid(row=1, column=0, pady=30)
 
 label_score_joueur = tk.Label(racine, text="Score joueur : ", font=("Helvetica", 12), bg="darkgreen", fg="white")
 label_score_joueur.grid(row=3, column=1, columnspan=3, pady=5)
