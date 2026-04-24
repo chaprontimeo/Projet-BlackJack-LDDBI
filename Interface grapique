@@ -143,6 +143,7 @@ def action_hit():
         bouton_nouvelle.config(state = "normal")
         tour_en_cours = False
         mise = mise + 10
+        afficher_etat()
         return
     afficher_message("Vous avez tiré " + carte + ". Voulez-vous continuer ou vous arrêter ? (Hit/Stand)")
 
