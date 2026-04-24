@@ -94,6 +94,7 @@ def afficher_etat():
             text="Main croupier : " + croupier[0] + " | ?")
     else:
         label_main_croupier.config(text="Main croupier : ")
+    dessiner_pile_jetons()
 
 
 def afficher_message(message):
@@ -168,6 +169,18 @@ def action_stand():
     elif not brule(joueur):
         return comparer_score(joueur,croupier)
 
+def dessiner_pile_jetons():
+    canvas_jetons.delete("all")
+
+    # 5 jetons noirs fixes
+    for i in range(5):
+        y_decalage = 60 - i * 8
+        canvas_jetons.create_oval(20, y_decalage,100, y_decalage + 30,fill="black",outline="white",width=2)
+
+    # texte sur le jeton du dessus
+    y_haut = 60 - 4 * 8
+    canvas_jetons.create_text(60, y_haut + 15,text=str(mise),fill="white",font=("Helvetica", 11, "bold"))
+
 def action_dd():
     global tour_en_cours, mise, paquet_carte
     if len(joueur) == 2 and calculer_score(joueur) in [9,10,11]:
@@ -199,23 +212,7 @@ def action_surrender():
     tour_en_cours = False
     return
 
-canvas_jetons = tk.Canvas(racine, width=140, height=80, bg="darkgreen", highlightthickness=0)
-canvas_jetons.grid(row=1, column=0, pady=10)
 
-# jeton rouge
-canvas_jetons.create_oval(10, 20, 50, 60, fill="red", outline="white", width=2)
-canvas_jetons.create_oval(18, 28, 42, 52, outline="white", width=2)
-canvas_jetons.create_text(30, 40, text="10", fill="white", font=("Helvetica", 10, "bold"))
-
-# jeton bleu
-canvas_jetons.create_oval(50, 10, 90, 50, fill="blue", outline="white", width=2)
-canvas_jetons.create_oval(58, 18, 82, 42, outline="white", width=2)
-canvas_jetons.create_text(70, 30, text="20", fill="white", font=("Helvetica", 10, "bold"))
-
-# jeton noir
-canvas_jetons.create_oval(90, 20, 130, 60, fill="black", outline="white", width=2)
-canvas_jetons.create_oval(98, 28, 122, 52, outline="white", width=2)
-canvas_jetons.create_text(110, 40, text="50", fill="white", font=("Helvetica", 10, "bold"))
 
 label_titre = tk.Label(racine, text="BLACKJACK", font=("Helvetica", 22, "bold"), bg="darkgreen", fg="white")
 label_titre.grid(row=0, column=1, columnspan=3, pady=20)
@@ -226,8 +223,11 @@ label_main_croupier.grid(row=1, column=1, columnspan=3, pady=10)
 label_main_joueur = tk.Label(racine, text="Main joueur : ", font=("Helvetica", 14), bg="darkgreen", fg="white")
 label_main_joueur.grid(row=2, column=1, columnspan=3, pady=20)
 
-label_mise = tk.Label(racine, text="Mise du joueur : " + texte_mise())
-label_mise.grid(row = 2, column = 0, pady=30)
+canvas_jetons = tk.Canvas(racine, width=120, height=100, bg="darkgreen", highlightthickness=0)
+canvas_jetons.grid(row=1, column=0, rowspan=2, pady=10)
+
+label_mise = tk.Label(racine, text="Mise : " + texte_mise(), bg="darkgreen", fg="white", font=("Helvetica", 12))
+label_mise.grid(row=2, column=0, pady=30)
 
 label_score_joueur = tk.Label(racine, text="Score joueur : ", font=("Helvetica", 12), bg="darkgreen", fg="white")
 label_score_joueur.grid(row=3, column=1, columnspan=3, pady=5)
