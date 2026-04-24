@@ -49,6 +49,15 @@ def brule(joueur):
         est_brule = True
     return est_brule
 
+def comparer_score(joueur,croupier):
+    score_joueur = calculer_score(joueur)
+    score_croupier = calculer_score(croupier)
+    if score_croupier > score_joueur:
+        afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Vous avez perdu")
+    elif score_joueur == score_croupier:
+        afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Il y a égalité")
+    else:
+        afficher_message("Score croupier : " + str(score_croupier) + ". Votre score : " + str(score_joueur) + ". Vous avez gagné")
 
 racine = tk.Tk()
 racine.title("Blackjack - Interface joueur")
@@ -60,16 +69,21 @@ paquet_carte = []
 joueur = []
 croupier = []
 tour_en_cours = False
+mise = 50
 
 
 def texte_main(main):
     return " | ".join(main)
 
+def texte_mise():
+    global mise
+    return str(mise)
+
 
 def afficher_etat():
     label_main_joueur.config(text="Main joueur : " + texte_main(joueur))
-    label_score_joueur.config(
-        text="Score joueur : " + str(calculer_score(joueur)))
+    label_score_joueur.config(text="Score joueur : " + str(calculer_score(joueur)))
+    label_mise.config(text = "Mise : " + texte_mise())
     if len(croupier) >= 2:
         label_main_croupier.config(
             text="Main croupier : " + croupier[0] + " | ?")
@@ -82,15 +96,17 @@ def afficher_message(message):
 
 
 def nouvelle_partie():
-    global paquet_carte, joueur, croupier, tour_en_cours
+    global paquet_carte, joueur, croupier, tour_en_cours, mise
     paquet_carte = paquet_melange(paquet)
     joueur = creer_main(paquet_carte)
     croupier = creer_main(paquet_carte)
     tour_en_cours = True
+    mise = 50
     afficher_etat()
     afficher_message("Nouvelle partie commencée. Choisissez Hit ou Stand.")
     bouton_hit.config(state="normal")
     bouton_stand.config(state="normal")
+    bouton_dd.config(state = "normal")
     bouton_nouvelle.config(state="normal")
 
 
@@ -102,20 +118,20 @@ def action_hit():
     joueur.append(carte)
     afficher_etat()
     if brule(joueur):
-        afficher_message("Vous avez tiré " + carte +
-                         ". Vous avez trop de points, fin du tour.")
+        afficher_message("Vous avez tiré " + carte + ". Vous avez trop de points, fin du tour.")
         bouton_hit.config(state="disabled")
         bouton_stand.config(state="disabled")
+        bouton_dd.config(state = "disabled")
         tour_en_cours = False
         return
     if calculer_score(joueur) == 21:
         afficher_message("Vous avez 21 points. Fin du tour.")
         bouton_hit.config(state="disabled")
         bouton_stand.config(state="disabled")
+        bouton_dd.config(state ="disabled")
         tour_en_cours = False
         return
-    afficher_message("Vous avez tiré " + carte +
-                     ". Voulez-vous continuer ou vous arrêter ?")
+    afficher_message("Vous avez tiré " + carte + ". Voulez-vous continuer ou vous arrêter ? (Hit/Stand)")
 
 
 def action_stand():
@@ -125,7 +141,34 @@ def action_stand():
     afficher_message("Votre tour est terminé.")
     bouton_hit.config(state="disabled")
     bouton_stand.config(state="disabled")
-    tour_en_cours = False
+    if calculer_score(joueur) == 21:
+        afficher_message("Vous avez 21 points. Vous avez gagné")        
+        bouton_hit.config(state="disabled")
+        bouton_stand.config(state="disabled")
+        tour_en_cours = False
+        return
+    elif not brule(joueur):
+        return comparer_score(joueur,croupier)
+
+def action_dd():
+    global tour_en_cours, mise, paquet_carte
+    if len(joueur) == 2 and calculer_score(joueur) in [9,10,11]:
+        bouton_hit.config(state="disabled")
+        bouton_stand.config(state="disabled")
+        bouton_dd.config(state = "disabled")
+        mise = mise * 2
+        carte = tirer_cartes(paquet_carte)
+        joueur.append(carte)
+        afficher_etat()
+        return comparer_score(joueur,croupier)
+    else:
+        afficher_message("Vous ne pouvez pas faire cette action, vous devez faire une autre action")
+        bouton_dd.config(state = "disabled")
+        return
+
+def action_surrender():
+        global tour_en_cours, mise, paquet_carte
+        
 
 
 label_titre = tk.Label(racine, text="BLACKJACK", font=(
@@ -139,6 +182,9 @@ label_main_croupier.grid(row=1, column=0, columnspan=3, pady=10)
 label_main_joueur = tk.Label(racine, text="Main joueur : ", font=(
     "Helvetica", 14), bg="darkgreen", fg="white")
 label_main_joueur.grid(row=2, column=0, columnspan=3, pady=20)
+
+label_mise = tk.Label(racine, text="Mise Joueur : " + texte_mise())
+label_mise.grid(row = 2, column = 0, pady=30)
 
 label_score_joueur = tk.Label(racine, text="Score joueur : ", font=(
     "Helvetica", 12), bg="darkgreen", fg="white")
@@ -156,13 +202,17 @@ bouton_stand = tk.Button(racine, text="Stand", width=12, font=(
     "Helvetica", 12), command=action_stand)
 bouton_stand.grid(row=5, column=1, padx=10, pady=20)
 
+bouton_dd = tk.Button(racine, text= "Double Down", width = 12, font=("Helvetica",12), command = action_dd)
+bouton_dd.grid(row = 5, column = 2, padx=10, pady = 20)
+
 bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=(
     "Helvetica", 12), command=nouvelle_partie)
-bouton_nouvelle.grid(row=5, column=2, padx=10, pady=20)
+bouton_nouvelle.grid(row=5, column=3, padx=10, pady=20)
 
 
 bouton_hit.config(state="disabled")
 bouton_stand.config(state="disabled")
+bouton_dd.config(state ="disabled")
 
 racine.mainloop()
 
