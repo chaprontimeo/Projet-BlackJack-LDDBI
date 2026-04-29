@@ -130,6 +130,7 @@ def action_hit():
         bouton_stand.config(state="disabled")
         bouton_dd.config(state = "disabled")
         bouton_nouvelle.config(state="normal")
+        bouton_surrender.config(state="disabled")
         tour_en_cours = False
         mise = mise - 10
         afficher_etat()
