@@ -88,7 +88,7 @@ def texte_mise():
 def afficher_etat():
     label_main_joueur.config(text="Main joueur : " + texte_main(joueur))
     label_score_joueur.config(text="Score joueur : " + str(calculer_score(joueur)))
-    label_mise.config(text = "Mise")
+   
     if len(croupier) >= 2:
         label_main_croupier.config(
             text="Main croupier : " + croupier[0] + " | ?")
