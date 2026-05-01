@@ -2,8 +2,15 @@ import tkinter as tk
 import random
 
 
-paquet = 4 * ["As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi"]
 
+
+paquet = []
+valeurs = ["As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi"]
+couleurs = ["pique", "coeur", "trefle", "carreau"]
+
+for cartes in valeurs:
+    for c in couleurs:
+        paquet.append(f"{cartes}_{c}")
 
 def paquet_melange(paquet):
     paquet_copie = paquet.copy()
@@ -29,13 +36,16 @@ def creer_main(liste):
 def calculer_score(joueur):
     score = 0
     nombre_as = 0
+
     for carte in joueur:
-        if carte == "As":
+        valeur = carte.split("_")[0] 
+
+        if valeur == "As":
             score += 11
             nombre_as += 1
-        elif carte in ["2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-            score += int(carte)
-        elif carte in ["Valet", "Reine", "Roi"]:
+        elif valeur in ["2", "3", "4", "5", "6", "7", "8", "9", "10"]:
+            score += int(valeur)
+        elif valeur in ["Valet", "Reine", "Roi"]:
             score += 10
     while score > 21 and nombre_as > 0:
         score -= 10
@@ -64,6 +74,9 @@ def comparer_score(joueur,croupier):
         mise = mise + 10
         afficher_etat()
 
+# -----------------------------------------------------------------INTERFACE---------------------------------------------------------------------
+
+
 racine = tk.Tk()
 racine.title("Blackjack - Interface joueur")
 racine.geometry("780x500")
@@ -76,7 +89,15 @@ croupier = []
 tour_en_cours = False
 mise = 50
 
+images_cartes = {} #création d'un dictionnaire pour ne pas faire de conditions à chaque cartes
 
+def afficher_cartes():
+    for cartes in valeurs:
+        for c in couleurs:
+            nom_carte = f"{cartes}_{c}"
+            route = f"cartes/{nom_carte}.png"
+            images_cartes[nom_carte] = tk.PhotoImage(file=route).subsample(3,3) #subsample divise la taille de l'image par 3
+            
 def texte_main(main):
     return " | ".join(main)
 
