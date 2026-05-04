@@ -177,7 +177,7 @@ def nouvelle_partie():
     croupier = creer_main(paquet_carte)
     tour_en_cours = True
     mise = 50
-    afficher_etat()
+    afficher_etat()                                    #on rappelle cette fonction pour faire apparître les données telles que la main du croupier, la main du joueur et le score
     afficher_message("Nouvelle partie commencée. Choisissez une action.")
     bouton_hit.config(state="normal")
     bouton_stand.config(state="normal")
@@ -213,7 +213,7 @@ def action_hit():
         bouton_nouvelle.config(state = "normal")
         tour_en_cours = False
         mise = mise + 10
-        afficher_etat()
+        afficher_etat()                        
         return
     afficher_message("Vous avez tiré " + carte + ". Voulez-vous continuer ou vous arrêter ? (Hit/Stand)")
 
@@ -274,7 +274,7 @@ def action_dd():
 
 
 def action_surrender():
-    global tour_en_cours, mise, paquet_carte
+    global tour_en_cours, mise, paquet_carte                                    
     mise = mise//2                                                
     afficher_message("Vous avez abandonné")
     bouton_hit.config(state="disabled")
@@ -282,7 +282,7 @@ def action_surrender():
     bouton_dd.config(state="disabled")
     bouton_surrender.config(state="disabled")
     bouton_nouvelle.config(state="normal")
-    afficher_etat()
+    afficher_etat()                                                   
     tour_en_cours = False
     return
 
