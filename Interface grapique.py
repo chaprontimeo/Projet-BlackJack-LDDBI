@@ -275,12 +275,12 @@ def action_stand():
 def dessiner_pile_jetons():
     canvas_jetons.delete("all")
 
-    # 5 jetons noirs fixes
+    # 5 jet
     for i in range(5):
         y_decalage = 60 - i * 8
         canvas_jetons.create_oval(20, y_decalage,100, y_decalage + 30,fill="black",outline="white",width=2)
 
-    # texte sur le jeton du dessus
+    # texte sur jeton
     y_haut = 60 - 4 * 8
     canvas_jetons.create_text(60, y_haut + 15,text=str(mise),fill="white",font=("Helvetica", 11, "bold"))
 
