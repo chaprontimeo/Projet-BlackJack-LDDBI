@@ -177,7 +177,7 @@ def nouvelle_partie():
     croupier = creer_main(paquet_carte)
     tour_en_cours = True
     mise = 50
-    afficher_etat()                                    #on rappelle cette fonction pour faire apparître les données telles que la main du croupier, la main du joueur et le score
+    afficher_etat()                                    #on rappelle cette fonction pour faire mettre à jour les données telles que la main du croupier, la main du joueur et le score
     afficher_message("Nouvelle partie commencée. Choisissez une action.")
     bouton_hit.config(state="normal")
     bouton_stand.config(state="normal")
