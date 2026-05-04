@@ -273,6 +273,26 @@ def action_dd():
 
 
 
+
+def action_surrender():
+    global tour_en_cours, mise, paquet_carte
+    mise = mise//2                                                
+    afficher_message("Vous avez abandonné")
+    bouton_hit.config(state="disabled")
+    bouton_stand.config(state="disabled")
+    bouton_dd.config(state="disabled")
+    bouton_surrender.config(state="disabled")
+    bouton_nouvelle.config(state="normal")
+    afficher_etat()
+    tour_en_cours = False
+    return
+
+
+
+
+
+
+
 label_titre = tk.Label(racine, text="BLACKJACK", font=("Helvetica", 22, "bold"), bg="darkgreen", fg="white")
 label_titre.grid(row=0, column=1, columnspan=3, pady=20)
 
