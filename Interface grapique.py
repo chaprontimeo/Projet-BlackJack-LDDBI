@@ -153,7 +153,7 @@ def afficher_main_croupier(main, frame, cacher_deuxieme=True):
         frame.images.append(img)
 
 
-def texte_mise():                            amir
+def texte_mise():                            #amir
     global mise
     return str(mise)
 
