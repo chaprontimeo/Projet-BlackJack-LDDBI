@@ -272,17 +272,17 @@ def action_stand():
     elif not brule(joueur):
         return comparer_score(joueur,croupier)
 
+
 def dessiner_pile_jetons():
     canvas_jetons.delete("all")
-
     # 5 jet
     for i in range(5):
         y_decalage = 60 - i * 8
         canvas_jetons.create_oval(20, y_decalage,100, y_decalage + 30,fill="black",outline="white",width=2)
-
     # texte sur jeton
     y_haut = 60 - 4 * 8
     canvas_jetons.create_text(60, y_haut + 15,text=str(mise),fill="white",font=("Helvetica", 11, "bold"))
+
 
 def action_dd():
     global tour_en_cours, mise, paquet_carte
