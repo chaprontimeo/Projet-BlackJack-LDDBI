@@ -78,7 +78,7 @@ def comparer_score(joueur,croupier):
 
 
 racine = tk.Tk()
-racine.title("Blackjack - Interface joueur")
+racine.title("Blackjack - Interface joueur")                        
 racine.geometry("780x500")
 racine.config(bg="darkgreen")
 
@@ -89,7 +89,7 @@ croupier = []
 tour_en_cours = False
 mise = 50
 
-images_cartes = {} #création d'un dictionnaire pour ne pas faire de conditions à chaque cartes
+images_cartes = {} #création d'un dictionnaire pour ne pas faire de conditions à chaque cartes#
 
 def charger_cartes():
     for cartes in valeurs:
