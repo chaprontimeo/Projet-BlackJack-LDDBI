@@ -273,7 +273,6 @@ def action_dd():
 
 
 
-
 def action_surrender():
     global tour_en_cours, mise, paquet_carte
     mise = mise//2                                                
@@ -286,8 +285,6 @@ def action_surrender():
     afficher_etat()
     tour_en_cours = False
     return
-
-
 
 
 
