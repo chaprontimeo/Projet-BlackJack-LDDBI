@@ -283,7 +283,6 @@ def action_surrender():
     bouton_surrender.config(state="disabled")
     bouton_nouvelle.config(state="normal")
     afficher_etat()                                                   
-    tour_en_cours = False
     return
 
 
