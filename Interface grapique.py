@@ -5,7 +5,7 @@ import os
 
 
 paquet = []
-valeurs = ["As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi"]
+valeurs = ["As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi"]                                #modification des paquets en couleurs et valeurs pour uafficher les cartes de manière différentes 
 couleurs = ["pique", "coeur", "trefle", "carreau"]
 
 for cartes in valeurs:
@@ -13,10 +13,10 @@ for cartes in valeurs:
         paquet.append(f"{cartes}_{c}")
 
 def paquet_melange(paquet):
-    paquet_copie = paquet.copy()
+    paquet_copie = paquet.copy()            #assignation pour ne pas faire de modifications dans 2 fois le même paquet 
     nouveau_paquet = []
     while len(paquet_copie) > 0:
-        numero_carte = random.randint(0, len(paquet_copie) - 1)
+        numero_carte = random.randint(0, len(paquet_copie) - 1)                                #
         nouveau_paquet.append(paquet_copie.pop(numero_carte))
     return nouveau_paquet
 
