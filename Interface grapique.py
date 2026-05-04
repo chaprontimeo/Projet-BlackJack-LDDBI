@@ -183,7 +183,34 @@ def nouvelle_partie():
     bouton_stand.config(state="normal")
     bouton_dd.config(state = "normal")
     bouton_surrender.config(state = "normal")
-    bouton_nouvelle.config(text ="Prochain Tour",state="disabled")
+    bouton_nouvelle.config(state="disabled")
+    bouton_tour.config(state="disabled")
+
+
+def prochain_tour():
+    global paquet_carte, joueur, croupier, tour_en_cours, mise
+    paquet_carte = paquet_melange(paquet)
+    joueur = creer_main(paquet_carte)
+    croupier = creer_main(paquet_carte)
+    tour_en_cours = True
+    afficher_etat()                                    
+    bouton_hit.config(state="normal")
+    bouton_stand.config(state="normal")
+    bouton_dd.config(state = "normal")
+    bouton_surrender.config(state = "normal")
+    bouton_nouvelle.config(state="disabled")
+    bouton_tour.config(state="disabled")
+    if mise <= 0:
+        bouton_hit.config(state="disabled")
+        bouton_stand.config(state="disabled")
+        bouton_dd.config(state = "disabled")
+        bouton_surrender.config(state = "disabled")
+        bouton_nouvelle.config(state="normal")
+        bouton_tour.config(state="disabled")
+        afficher_message("Vous ne pouvez pas rejouer !")
+
+
+
 
 
 def action_hit():
@@ -198,6 +225,7 @@ def action_hit():
         bouton_hit.config(state="disabled")
         bouton_stand.config(state="disabled")
         bouton_dd.config(state = "disabled")
+        bouton_tour.config(state="normal")
         bouton_nouvelle.config(state="normal")
         bouton_surrender.config(state="disabled")
         tour_en_cours = False
@@ -210,6 +238,7 @@ def action_hit():
         bouton_stand.config(state="disabled")
         bouton_dd.config(state ="disabled")
         bouton_surrender.config(state = "disabled")
+        bouton_tour.config(state="normal")
         bouton_nouvelle.config(state = "normal")
         tour_en_cours = False
         mise = mise + 10
@@ -228,6 +257,7 @@ def action_stand():
     bouton_dd.config(state="disabled")
     bouton_surrender.config(state="disabled")
     bouton_nouvelle.config(state ="normal")
+    bouton_tour.config(state="normal")
     if calculer_score(joueur) == 21:
         afficher_message("Vous avez 21 points. Vous avez gagné")        
         bouton_hit.config(state="disabled")
@@ -235,7 +265,9 @@ def action_stand():
         bouton_dd.config(state="disabled")
         bouton_surrender.config(state="disabled")
         bouton_nouvelle.config(state = "normal")
+        bouton_tour.config(state="normal")
         tour_en_cours = False
+        mise += 10
         return
     elif not brule(joueur):
         return comparer_score(joueur,croupier)
@@ -260,6 +292,7 @@ def action_dd():
         bouton_dd.config(state = "disabled")
         bouton_surrender.config(state = "disabled")
         bouton_nouvelle(state = "normal")
+        bouton_tour.config(state="disabled")
         mise = mise * 2
         carte = tirer_cartes(paquet_carte)
         joueur.append(carte)
@@ -282,6 +315,7 @@ def action_surrender():
     bouton_dd.config(state="disabled")
     bouton_surrender.config(state="disabled")
     bouton_nouvelle.config(state="normal")
+    bouton_tour.config(state="normal")
     afficher_etat()                                                   
     return
 
@@ -325,10 +359,13 @@ bouton_surrender.grid(row = 8, column = 3, padx= 10, pady = 20)
 bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=("Helvetica", 12), command=nouvelle_partie)
 bouton_nouvelle.grid(row=8, column=4, padx=10, pady=20)
 
+bouton_tour= tk.Button(racine, text= "Prochain Tour", width=18, font=("Helvetica", 12), command= prochain_tour)
+bouton_tour.grid(row=9, column=2)
 
 bouton_hit.config(state="disabled")
 bouton_stand.config(state="disabled")
 bouton_dd.config(state ="disabled")
 bouton_surrender.config(state = "disabled")
+bouton_tour.config(state= "disabled")
 
 racine.mainloop()
