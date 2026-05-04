@@ -319,7 +319,8 @@ bouton_stand.grid(row=8, column=1, padx=10, pady=20)
 bouton_dd = tk.Button(racine, text= "Double Down", width = 12, font=("Helvetica",12), command = action_dd)
 bouton_dd.grid(row = 8, column = 2, padx=10, pady = 20)
 
-
+bouton_surrender = tk.Button(racine, text = "Surrender", width = 12, font = ("Helvetica", 12), command = action_surrender)
+bouton_surrender.grid(row = 8, column = 3, padx= 10, pady = 20)
 
 bouton_nouvelle = tk.Button(racine, text="Nouvelle partie", width=18, font=("Helvetica", 12), command=nouvelle_partie)
 bouton_nouvelle.grid(row=8, column=4, padx=10, pady=20)
