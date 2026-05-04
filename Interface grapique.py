@@ -270,18 +270,6 @@ def action_dd():
         bouton_dd.config(state = "disabled")
         return
 
-def action_surrender():
-    global tour_en_cours, mise, paquet_carte
-    mise = mise//2
-    afficher_message("Vous avez abandonné")
-    bouton_hit.config(state="disabled")
-    bouton_stand.config(state="disabled")
-    bouton_dd.config(state="disabled")
-    bouton_surrender.config(state="disabled")
-    bouton_nouvelle.config(state="normal")
-    afficher_etat()
-    tour_en_cours = False
-    return
 
 
 
