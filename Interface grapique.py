@@ -55,7 +55,7 @@ def calculer_score(joueur):                                         #tout les co
 
 def brule(joueur):
     est_brule = False
-    if calculer_score(joueur) > 21:
+    if calculer_score(joueur) > 21:                            # tant que c'est inferieur à 21 ca joue 
         est_brule = True
     return est_brule
 
