@@ -98,7 +98,7 @@ def charger_cartes():
             #route = f"cartes/{nom_carte}.png" cela aurait du être le chemin utilisé pour trouver les images
 
             BASE_DIR = os.path.dirname(__file__)
-            route = os.path.join(BASE_DIR, "cartes", nom_carte + ".png")
+            route = os.path.join(BASE_DIR, "cartes", nom_carte + ".png")                        
             images_cartes[nom_carte] = tk.PhotoImage(file=route).subsample(7,7)
 
 
@@ -107,7 +107,7 @@ BASE_DIR = os.path.dirname(__file__)
 route_dos = os.path.join(BASE_DIR, "cartes", "dos.png")
 image_dos = tk.PhotoImage(file=route_dos).subsample(5,5)
 
-charger_cartes()
+charger_cartes() #on appelle la fonction pour pouvoir afficher les cartes tirées plus tard 
 
 frame_croupier = tk.Frame(racine, bg="darkgreen")
 frame_croupier.grid(row=2, column=1, columnspan=3)
