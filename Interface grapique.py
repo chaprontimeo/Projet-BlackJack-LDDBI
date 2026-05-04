@@ -10,13 +10,13 @@ couleurs = ["pique", "coeur", "trefle", "carreau"]
 
 for cartes in valeurs:
     for c in couleurs:
-        paquet.append(f"{cartes}_{c}")
+        paquet.append(f"{cartes}_{c}")    #affichage chaque carte pour sa "famille"
 
 def paquet_melange(paquet):
-    paquet_copie = paquet.copy()            #assignation pour ne pas faire de modifications dans 2 fois le même paquet 
+    paquet_copie = paquet.copy()            #assignation pour ne pas faire de modifications dans 2 fois le même paquet et pour ne pas supprimer les cartes precedemment mis dans le paquet 
     nouveau_paquet = []
     while len(paquet_copie) > 0:
-        numero_carte = random.randint(0, len(paquet_copie) - 1)                                #
+        numero_carte = random.randint(0, len(paquet_copie) - 1)                                
         nouveau_paquet.append(paquet_copie.pop(numero_carte))
     return nouveau_paquet
 
