@@ -22,18 +22,18 @@ def paquet_melange(paquet):
 
 
 def tirer_cartes(liste):
-    carte = liste.pop()
+    carte = liste.pop()                            #liste = nouveau_paquet
     return carte
 
 
 def creer_main(liste):
     main = []
-    main.append(tirer_cartes(liste))
+    main.append(tirer_cartes(liste))                                #on va ajouter à la main les cartes tirées precedemment
     main.append(tirer_cartes(liste))
     return main
 
 
-def calculer_score(joueur):
+def calculer_score(joueur):                                         #tout les compteurs sont à zero pour la règle de l'As
     score = 0
     nombre_as = 0
 
